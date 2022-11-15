@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import Logo from "../assets/images/Logo.png";
+import { Link } from "react-router-dom";
 
 export default function SignUp() {
   return (
@@ -32,8 +33,9 @@ export default function SignUp() {
 
         <button>Cadastrar</button>
       </form>
-
-      <h2>Já tem uma conta? Entre agora!</h2>
+      <Link to={"/"}>
+        <h2>Já tem uma conta? Entre agora!</h2>
+      </Link>
     </SignUpContainer>
   );
 }

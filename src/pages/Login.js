@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import Logo from "../assets/images/Logo.png";
+import {Link} from "react-router-dom";
 
 export default function Login() {
   return (
@@ -23,7 +24,9 @@ export default function Login() {
         />
         <button>Entrar</button>
       </form>
-      <h2>Primeira vez? Cadastre-se!</h2>
+      <Link to={"/sign-up"}>
+        <h2>Primeira vez? Cadastre-se!</h2>
+      </Link>
     </LoginContainer>
   );
 }
