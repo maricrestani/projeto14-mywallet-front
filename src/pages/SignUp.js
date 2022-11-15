@@ -1,37 +1,66 @@
 import styled from "styled-components";
 import Logo from "../assets/images/Logo.png";
 import { Link } from "react-router-dom";
+import { ThreeDots } from "react-loader-spinner";
+import { React, useState } from "react";
 
 export default function SignUp() {
+  const [isLoading, setIsLoading] = useState(false);
+  const [form, setForm] = useState({
+    name: "",
+    email: "",
+    password: "",
+    passwordConfirmation: "",
+  });
+
+  function handleForm(e) {
+    const { name, value } = e.target;
+    setForm({ ...form, [name]: value });
+  }
+
+  console.log(form);
+
   return (
     <SignUpContainer>
       <img src={Logo} alt="Logo" />
 
       <form>
-        <input name="name" value="" placeholder="Nome" type="text" required />
+        <input
+          name="name"
+          value={form.name}
+          placeholder="Nome"
+          type="text"
+          required
+          onChange={handleForm}
+        />
         <input
           name="email"
-          value=""
+          value={form.email}
           placeholder="E-mail"
           type="email"
           required
+          onChange={handleForm}
         />
         <input
           name="password"
-          value=""
+          value={form.password}
           placeholder="Senha"
           type="password"
           required
+          onChange={handleForm}
         />
         <input
-          name="password"
-          value=""
+          name="passwordConfirmation"
+          value={form.passwordConfirmation}
           placeholder="Consfirme a senha"
           type="password"
           required
+          onChange={handleForm}
         />
 
-        <button>Cadastrar</button>
+        <button type="submit" disable={isLoading}>
+          {isLoading ? <ThreeDots color="#FFFFFF" /> : "Cadastrar"}
+        </button>
       </form>
       <Link to={"/"}>
         <h2>Já tem uma conta? Entre agora!</h2>

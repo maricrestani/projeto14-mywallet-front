@@ -1,8 +1,18 @@
 import styled from "styled-components";
 import Logo from "../assets/images/Logo.png";
-import {Link} from "react-router-dom";
+import { Link } from "react-router-dom";
+import { ThreeDots } from "react-loader-spinner";
+import { React, useState } from "react";
 
 export default function Login() {
+  const [isLoading, setIsLoading] = useState(false);
+  const [form, setForm] = useState({ email: "", password: "" });
+
+  function handleForm(e) {
+    const { name, value } = e.target;
+    setForm({ ...form, [name]: value });
+  }
+
   return (
     <LoginContainer>
       <img src={Logo} alt="logo" />
@@ -10,19 +20,23 @@ export default function Login() {
       <form>
         <input
           name="email"
-          value=""
+          value={form.email}
           placeholder="E-mail"
           type="email"
           required
+          onChange={handleForm}
         />
         <input
-          name="senha"
-          value=""
+          name="password"
+          value={form.password}
           placeholder="Senha"
           type="password"
           required
+          onChange={handleForm}
         />
-        <button>Entrar</button>
+        <button type="submit" disabled={isLoading}>
+          {isLoading ? <ThreeDots color="#FFFFFF" /> : "Entrar"}
+        </button>
       </form>
       <Link to={"/sign-up"}>
         <h2>Primeira vez? Cadastre-se!</h2>
