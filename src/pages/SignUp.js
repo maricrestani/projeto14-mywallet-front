@@ -1,10 +1,14 @@
-import styled from "styled-components";
+import axios from 'axios';
+import { React, useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import styled from 'styled-components';
 import Logo from "../assets/images/Logo.png";
-import { Link } from "react-router-dom";
-import { ThreeDots } from "react-loader-spinner";
-import { React, useState } from "react";
+import { URL } from '../constants/URL.js';
+import { ThreeDots } from 'react-loader-spinner'
 
 export default function SignUp() {
+
+  const navigate = useNavigate()
   const [isLoading, setIsLoading] = useState(false);
   const [form, setForm] = useState({
     name: "",
@@ -18,13 +22,28 @@ export default function SignUp() {
     setForm({ ...form, [name]: value });
   }
 
-  console.log(form);
+  function signUp(e) {
+    e.preventDefault()
+    setIsLoading(true)
+
+    axios.post(`${URL}/signup`, form)
+
+        .then(res => {
+            setIsLoading(false)
+            navigate('/')
+        })
+
+        .catch(err => {
+            setIsLoading(false)
+            alert(`Falha no cadastro - ${err.message}`)
+        })
+}
 
   return (
     <SignUpContainer>
       <img src={Logo} alt="Logo" />
 
-      <form>
+      <form onSubmit={signUp}>
         <input
           name="name"
           value={form.name}

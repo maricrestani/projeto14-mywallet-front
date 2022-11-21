@@ -1,12 +1,48 @@
+import axios from "axios";
+import { React, useContext, useEffect, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import Logo from "../assets/images/Logo.png";
-import { Link } from "react-router-dom";
 import { ThreeDots } from "react-loader-spinner";
-import { React, useState } from "react";
+import { URL } from "../constants/URL.js";
+import UserContext from "../contexts/UserContext";
 
 export default function Login() {
   const [isLoading, setIsLoading] = useState(false);
   const [form, setForm] = useState({ email: "", password: "" });
+  const { setUserToken } = useContext(UserContext);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const token = localStorage.getItem("localToken");
+
+    if (token) {
+      setUserToken(token);
+      navigate(`/home`);
+    }
+  }, []);
+
+  function log(e) {
+    e.preventDefault();
+    setIsLoading(true);
+
+    axios
+      .post(`${URL}/login`, form)
+
+      .then((res) => {
+        setIsLoading(false);
+
+        localStorage.setItem("localToken", res.data.token);
+        localStorage.setItem("localEmail", res.data.email);
+
+        navigate(`/home`);
+      })
+
+      .catch((err) => {
+        setIsLoading(false);
+        alert(`Falha no login - ${err.message}`);
+      });
+  }
 
   function handleForm(e) {
     const { name, value } = e.target;
@@ -17,7 +53,7 @@ export default function Login() {
     <LoginContainer>
       <img src={Logo} alt="logo" />
 
-      <form>
+      <form onSubmit={log}>
         <input
           name="email"
           value={form.email}
